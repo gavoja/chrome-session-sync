@@ -1,5 +1,5 @@
 /* global chrome */
-console.log('Context sync initialised.')
+console.log('Session sync initialised.')
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const data = { ls: {}, ss: {} }
 

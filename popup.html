@@ -1,0 +1,65 @@
+<html>
+  <body>
+    <style>
+      * {
+        font-family: monospace;
+        font-size: 12px;
+      }
+
+      body {
+        margin: 8px;
+      }
+
+      #content {
+        width: 400px;
+        input, textarea {
+          width: 100%;
+          border: 1px solid gainsboro;
+          padding: 8px;
+          border-radius: 2px;
+        }
+
+        textarea {
+          height: 200px;
+          resize: none;
+        }
+      }
+
+      p {
+        margin-block-start: 8px;
+        margin-block-end: 8px;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+    <div id="content">
+      <p>
+        GitHub token:
+        <input id="github-token" type="text"></input>
+      </p>
+      <p>
+        URLs to sync (one per line):
+        <textarea id="urls"></textarea>
+      </p>
+      <p>
+        <a href="#" id="save">Save context</a>
+      </p>
+      <p>
+        <a href="#" id="load">Load context</a>
+      </p>
+      <p>
+        <a href="#" id="enable-scripts">Debug: enable scripts</a>
+      </p>
+      <p>
+        <a href="#" id="disable-scripts">Debug: disable scripts</a>
+      </p>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>

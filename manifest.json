@@ -1,0 +1,31 @@
+{
+  "name": "Chrome Session Sync",
+  "description": "Copies cookies and storage",
+  "version": "1.0",
+  "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["*://*/*"],
+    "run_at": "document_start",
+    "js": ["content.js"]
+  }],
+  "declarative_net_request": {
+    "rule_resources": [{
+      "id": "ruleset",
+      "enabled": false,
+      "path": "ruleset.json"
+    }]
+  },
+  "permissions": [
+    "webRequest",
+    "cookies",
+    "storage",
+    "tabs",
+    "declarativeNetRequestWithHostAccess"
+  ],
+  "host_permissions": [
+    "*://*/*"
+  ]
+}

@@ -1,24 +1,41 @@
 /* global chrome */
 const GIST_NAME = 'chrome-context-sync.json'
 
-let urls
-let headers
+//
+// Input handling.
+//
 
-async function init () {
-  await enableScripts()
-  const token = (await chrome.storage.sync.get('githubToken')).githubToken || ''
-  document.getElementById('github-token').setAttribute('value', token)
-  headers = {
+async function loadFromStorage () {
+  const savedToken = (await chrome.storage.sync.get('githubToken')).githubToken
+  if (savedToken) {
+    document.getElementById('github-token').value = savedToken
+  }
+
+  const savedUrls = (await chrome.storage.sync.get('urls')).urls
+  if (savedUrls) {
+    document.getElementById('urls').value = savedUrls
+  }
+}
+
+loadFromStorage()
+
+async function getHeaders () {
+  const token = document.getElementById('github-token').value
+  const headers = {
     Authorization: `token ${token}`,
     'Content-Type': 'application/json',
     'X-GitHub-Api-Version': '2022-11-28'
   }
-  const urlsText = (await chrome.storage.sync.get('urls')).urls || ''
-  document.getElementById('urls').value = urlsText
-  urls = urlsText.split('\n').map(url => url.trim())
+
+  return headers
 }
 
-init()
+async function getUrls () {
+  const urls = document.getElementById('urls').value.trim().split('\n').map(url => url.trim())
+  return urls
+}
+
+getUrls()
 
 //
 // Cookie management.
@@ -84,12 +101,14 @@ async function enableScripts () {
 //
 
 async function getGist () {
+  const headers = await getHeaders()
   const res = await fetch('https://api.github.com/gists', { headers })
   const gists = await res.json()
   return gists.find(gist => gist.files[GIST_NAME])
 }
 
 async function saveData (data) {
+  const headers = await getHeaders()
   const gist = await getGist()
 
   if (!gist) {
@@ -131,6 +150,7 @@ async function saveData (data) {
 
 document.getElementById('save').addEventListener('click', async event => {
   const data = []
+  const urls = await getUrls()
 
   await disableScripts()
 
